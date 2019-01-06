@@ -1,0 +1,19 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from airtest_selenium.proxy import WebChrome
+driver = WebChrome()
+driver.implicitly_wait(20)
+
+driver.get("https://www.591.com.hk/")
+
+# 进入登录页面 
+ele = driver.find_element_by_xpath("//a[@href='https://www.591.com.hk/home/user/login']")
+print(ele)
+ele.click()
+driver.switch_to_new_tab()
+driver.find_element_by_xpath("//input[@type='tel']").send_keys("18050862370")
+driver.find_element_by_xpath("//input[@type='password']").send_keys("cx5063820110")
+driver.find_element_by_xpath("//input[@type='password']").click()
+driver.find_element_by_id("btnSubmit").click()
+driver.assert_exist("//*[@id=\"header\"]/div/div/div[2]/ul/li/a", "xpath", "登录成功.")
+

@@ -46,7 +46,7 @@ class MyAirtestCase(unittest.TestCase):
     def runTest(self):
         try:
             # 调用脚本中的runCase方法并传递scope供脚本使用
-            self.runCase(self.scope)
+            exec(self._code["code"], self._code["ns"])
         except Exception as err:
             tb = traceback.format_exc()
             log("Final Error", tb)
@@ -59,6 +59,14 @@ class MyAirtestCase(unittest.TestCase):
     @logdir.setter
     def logdir(self, value):
         self._logdir = value
+
+    @property
+    def code(self):
+        return self._code
+
+    @code.setter
+    def code(self, value):
+        self._code = value
 
 def setup_by_args(args):
     # init devices
@@ -95,15 +103,12 @@ def new_case(py, logdir):
     obj = compile(code.encode("utf-8"), py, "exec")
     ns = {}
     ns["__file__"] = py
-    # exec obj in ns
-    exec(obj, ns)
-    func = ns["runCase"]
+
     case = MyAirtestCase()
     pyfilename = os.path.basename(py).replace(".py", "")
     # 设置属性以便在setUp中设置日志路径
     case.logdir = os.path.join(logdir, pyfilename)
-    # 绑定runCase方法
-    case.runCase = types.MethodType(func, case)
+    case.code = {"code": obj, "ns": ns}
     return case
 
 def init_log_folder():
@@ -113,6 +118,23 @@ def init_log_folder():
         os.mkdir(name)
     return name
 
+def all_path(dirname):
+
+    result = []#所有的文件
+
+    for maindir, subdir, file_name_list in os.walk(dirname):
+
+        # print("1:",maindir) #当前主目录
+        # print("2:",subdir) #当前主目录下的所有目录
+        # print("3:",file_name_list)  #当前主目录下的所有文件
+
+        for filename in file_name_list:
+            apath = os.path.join(maindir, filename)#合并成一个完整路径
+            if apath.endswith(".py"):
+                result.append(apath)
+
+    return result
+
 def run_script(parsed_args, testcase_cls=MyAirtestCase):
     global args  # make it global deliberately to be used in MyAirtestCase & test scripts
     args = parsed_args
@@ -121,17 +143,19 @@ def run_script(parsed_args, testcase_cls=MyAirtestCase):
     pys = []
 
     # 获取所有用例集
-    for f in os.listdir(dir):
-        if f.endswith("用例集"):
-            f = os.path.join(dir, f)
-            if os.path.isdir(f):
-                suites.append(f)
+    # for f in os.listdir(dir):
+    #     if f.endswith("air"):
+    #         f = os.path.join(dir, f)
+    #         if os.path.isdir(f):
+    #             suites.append(f)
 
-    # 获取所有脚本
-    for s in suites:
-        for f in os.listdir(s):
-            if f.endswith(".py") and not f.startswith("__"):
-                pys.append(os.path.join(s, f))
+    # # 获取所有脚本
+    # for s in suites:
+    #     for f in os.listdir(s):
+    #         if f.endswith(".py") and not f.startswith("__"):
+    #             pys.append(os.path.join(s, f))
+    case_dir = os.path.join(dir, 'cases')
+    pys = all_path(case_dir)
 
     logdir = os.path.join(dir, init_log_folder())
     args.log = logdir

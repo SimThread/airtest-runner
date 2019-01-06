@@ -1,0 +1,23 @@
+# -*- encoding=utf8 -*-
+__author__ = "10714"
+
+from airtest.core.api import *
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.touch_actions import TouchActions
+from airtest_selenium.proxy import WebChrome
+
+mobile_emulation = {"deviceName":"Galaxy S5"}
+option = webdriver.ChromeOptions()
+option.add_experimental_option('mobileEmulation',mobile_emulation)
+driver = WebChrome(chrome_options=option)
+driver.get('https://www.baidu.com')
+print('打开浏览器')
+print(driver.title)
+driver.find_element_by_id('index-kw').send_keys('测试')
+# driver.find_element_by_id("index-bn").click()
+el = driver.find_element_by_id("index-bn")
+TouchActions(driver).tap(el).perform()
+print('关闭')
+driver.quit()
+print('测试完成')

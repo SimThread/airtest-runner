@@ -10,3 +10,6 @@ def img(name):
         folder = folder[ : folder.find(".")]
     folder = os.path.join(folder, name) + ".png"
     return folder
+
+def print_hello():
+    print("hello world")
