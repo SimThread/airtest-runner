@@ -5,7 +5,21 @@ from poco.drivers.android.uiautomation import AndroidUiautomationPoco
 auto_setup(__file__)
 poco = AndroidUiautomationPoco(force_restart=False)
 
+def clear_591app():
+    stop_app('com.addcn.android.hk591new')
+    clear_app('com.addcn.android.hk591new')
+    
+def switch_env():
+    start_app('com.addcn.android.hk591new')
+    wait(Template(r"tpl1535510550041.png", record_pos=(0.377, 0.819), resolution=(1440, 2560)))
+    poco("com.addcn.android.hk591new:id/tab_more").click()
+    poco("com.addcn.android.hk591new:id/head_title_tv").long_click(duration=5)
+    poco("com.addcn.android.hk591new:id/tab_home").click()
+    stop_app('com.addcn.android.hk591new')
+
+    
 def login():
+    switch_env()
     # 从配置文件读取账号密码
     config = configparser.ConfigParser()
     config.read("config/account.ini", encoding="utf8")
@@ -23,7 +37,7 @@ def login():
     # 點擊我的
     poco("com.addcn.android.hk591new:id/tab_i_house").click()
 
-    if poco("com.addcn.android.hk591new:id/iv_picture").wait(5).exists():
+    if poco("com.addcn.android.hk591new:id/iv_picture").wait(10).exists():
         poco("com.addcn.android.hk591new:id/iv_clear").click()
 
     # 點擊進入登錄頁面，填写账号和密码
@@ -34,7 +48,7 @@ def login():
     text(password)
     poco("com.addcn.android.hk591new:id/btn_user_login").click()
 
-    if poco("com.addcn.android.hk591new:id/iv_picture").wait(5).exists():
+    if poco("com.addcn.android.hk591new:id/iv_picture").wait(10).exists():
         poco("com.addcn.android.hk591new:id/iv_clear").click()
     exists(Template(r"tpl1522745145959.png", record_pos=(-0.235, -0.767), resolution=(1440, 2560)))
 
@@ -49,5 +63,7 @@ def logout():
     poco("android:id/button1").click()
 
     # 停止并清空App
-    stop_app('com.addcn.android.hk591new')
-    clear_app('com.addcn.android.hk591new')
+    # clear_591app()
+
+# clear_591app()
+# switch_env()
