@@ -73,6 +73,7 @@ def logout():
 
 # clear_591app()
 # switch_env()
+# global_setting()
 
 
 

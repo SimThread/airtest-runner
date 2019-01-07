@@ -1,11 +1,9 @@
 # -*- encoding=utf8 -*-
 from airtest.core.api import *
-ST.PROJECT_ROOT = "C:\\Users\\10714\\Desktop\\reference\\airtest-runner\\cases"
 using("common.air")
-
 from common import clear_591app, login, logout
-import configparser
 from poco.drivers.android.uiautomation import AndroidUiautomationPoco
+import configparser
 
 poco = AndroidUiautomationPoco(force_restart=False)
 auto_setup(__file__)
@@ -64,15 +62,10 @@ def startExit():
     keyevent("BACK")
     keyevent("BACK")
 
-
 login()
-
 fillForm()
-
 assert_success()
-
 startExit()
-
 logout()
 
 

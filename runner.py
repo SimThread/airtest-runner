@@ -14,6 +14,9 @@ from airtest.core.settings import Settings as ST
 from airtest.utils.compat import decode_path
 from copy import copy
 
+ST.FIND_TIMEOUT = 20
+ST.PROJECT_ROOT = "C:\\Users\\10714\\Desktop\\reference\\airtest-runner\\cases"
+
 class MyAirtestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -25,6 +28,8 @@ class MyAirtestCase(unittest.TestCase):
         cls.scope = copy(globals())
 
     def setUp(self):
+        print("******************************dsfsdf*********")
+        print("self:", self)
         if self.args.log and self.args.recording:
             for dev in G.DEVICE_LIST:
                 try:
@@ -93,6 +98,9 @@ def setup_by_args(args):
 
     # guess project_root to be basedir of current .air path
     project_root = os.path.dirname(args.script) if not ST.PROJECT_ROOT else None
+
+    print("project_root:", project_root)
+    print("args.script:", args.script)
     # 此处不设置日志路径，防止生成多余的log.txt
     auto_setup(args.script, devices, None, project_root)
 
