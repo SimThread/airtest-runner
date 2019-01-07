@@ -130,7 +130,7 @@ def all_path(dirname):
 
         for filename in file_name_list:
             apath = os.path.join(maindir, filename)#合并成一个完整路径
-            if apath.endswith(".py"):
+            if apath.endswith("case.py"):
                 result.append(apath)
 
     return result
@@ -154,7 +154,7 @@ def run_script(parsed_args, testcase_cls=MyAirtestCase):
     #     for f in os.listdir(s):
     #         if f.endswith(".py") and not f.startswith("__"):
     #             pys.append(os.path.join(s, f))
-    case_dir = os.path.join(dir, 'cases')
+    case_dir = os.path.join(dir, 'cases/Android')
     pys = all_path(case_dir)
 
     logdir = os.path.join(dir, init_log_folder())
