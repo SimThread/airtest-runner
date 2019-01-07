@@ -1,16 +1,14 @@
 # -*- encoding=utf8 -*-
 from airtest.core.api import *
-ST.PROJECT_ROOT = "C:\\Users\\10714\\Desktop\\reference\\airtest-runner\\cases\\Android"
+ST.PROJECT_ROOT = "C:\\Users\\10714\\Desktop\\reference\\airtest-runner\\cases"
 using("common.air")
 
-from common import login, logout
+from common import clear_591app, login, logout
 import configparser
 from poco.drivers.android.uiautomation import AndroidUiautomationPoco
 
 poco = AndroidUiautomationPoco(force_restart=False)
 auto_setup(__file__)
-#touch(Template(r"tpl1526984740704.png", record_pos=(0.4, -0.453), resolution=(1440, 2560)))
-# wait(Template(r"tpl1529844258339.png", record_pos=(-0.39, -0.386), resolution=(1440, 2560)))
 
 # 填寫表單
 def fillForm():
@@ -24,7 +22,7 @@ def fillForm():
     # 選擇屋苑
     poco("com.addcn.android.hk591new:id/address_tv").click()
     poco("com.addcn.android.hk591new:id/actv_community").click()
-    text("天")
+    poco("com.addcn.android.hk591new:id/actv_community").set_text("天")
     poco(text="天鑽").click()
 
     # 選擇間隔
@@ -76,4 +74,5 @@ assert_success()
 startExit()
 
 logout()
+
 

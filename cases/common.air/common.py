@@ -5,6 +5,9 @@ from poco.drivers.android.uiautomation import AndroidUiautomationPoco
 auto_setup(__file__)
 poco = AndroidUiautomationPoco(force_restart=False)
 
+def global_setting():
+    ST.FIND_TIMEOUT = 20
+
 def clear_591app():
     stop_app('com.addcn.android.hk591new')
     clear_app('com.addcn.android.hk591new')
@@ -13,16 +16,22 @@ def switch_env():
     start_app('com.addcn.android.hk591new')
     wait(Template(r"tpl1535510550041.png", record_pos=(0.377, 0.819), resolution=(1440, 2560)))
     poco("com.addcn.android.hk591new:id/tab_more").click()
-    poco("com.addcn.android.hk591new:id/head_title_tv").long_click(duration=5)
+
+    if poco("com.addcn.android.hk591new:id/head_title_tv").wait(5).get_text() == "更多":
+        poco("com.addcn.android.hk591new:id/head_title_tv").long_click(duration=5)
+    actual_val = poco("com.addcn.android.hk591new:id/head_title_tv").get_text()
+    assert_equal(actual_val, "更多 - debug模式", "切換到debug環境成功.")
     poco("com.addcn.android.hk591new:id/tab_home").click()
     stop_app('com.addcn.android.hk591new')
 
     
 def login():
+    clear_591app()
     switch_env()
     # 从配置文件读取账号密码
     config = configparser.ConfigParser()
-    config.read("config/account.ini", encoding="utf8")
+    config_path = os.path.abspath(os.path.join(os.path.realpath(__file__), "../../../config.ini"))
+    config.read(config_path, encoding="utf8")
     username = config.get("account_user", "username")
     password = config.get("account_user", "password")
 
@@ -62,8 +71,11 @@ def logout():
     keyevent("BACK")
     poco("android:id/button1").click()
 
-    # 停止并清空App
-    # clear_591app()
-
 # clear_591app()
 # switch_env()
+
+
+
+
+
+

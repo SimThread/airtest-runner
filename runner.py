@@ -154,7 +154,7 @@ def run_script(parsed_args, testcase_cls=MyAirtestCase):
     #     for f in os.listdir(s):
     #         if f.endswith(".py") and not f.startswith("__"):
     #             pys.append(os.path.join(s, f))
-    case_dir = os.path.join(dir, 'cases/Android')
+    case_dir = os.path.join(dir, 'cases')
     pys = all_path(case_dir)
 
     logdir = os.path.join(dir, init_log_folder())

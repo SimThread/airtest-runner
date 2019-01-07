@@ -1,9 +1,9 @@
 # -*- encoding=utf8 -*-
 from airtest.core.api import *
-ST.PROJECT_ROOT = "C:\\Users\\10714\\Desktop\\reference\\airtest-runner\\cases\\Android"
+ST.PROJECT_ROOT = "C:\\Users\\10714\\Desktop\\reference\\airtest-runner\\cases"
 using("common.air")
 from poco.drivers.android.uiautomation import AndroidUiautomationPoco
-from common import login, logout
+from common import global_setting, clear_591app, login, logout
 auto_setup(__file__)
 poco = AndroidUiautomationPoco(force_restart=False)
 # start your script here.
@@ -19,8 +19,6 @@ def buy_rent():
     wait(Template(r"tpl1527238885362.png", record_pos=(-0.401, -0.46), resolution=(1440, 2560)))
     assert_exists(Template(r"tpl1546845349917.png", record_pos=(-0.395, -0.414), resolution=(1080, 1920)), "出租購買成功")
 
-    
-
 #出售購買
 def buy_sale():
     touch(Template(r"tpl1527236483360.png", threshold=0.6, target_pos=5, rgb=False, record_pos=(0.122, -0.572), resolution=(1440, 2560)))
@@ -34,6 +32,7 @@ def buy_sale():
     exists(Template(r"tpl1527238885362.png", threshold=0.6, target_pos=5, rgb=False, record_pos=(-0.401, -0.46), resolution=(1440, 2560)))
     assert_exists(Template(r"tpl1546845349917.png", record_pos=(-0.395, -0.414), resolution=(1080, 1920)), "出售購買成功")
 
+global_setting()
 login()
 buy_rent()
 buy_sale()
